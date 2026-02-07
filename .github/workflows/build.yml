@@ -1,0 +1,25 @@
+name: Manual Rust Build
+
+# 这里定义触发方式
+on:
+  workflow_dispatch: # 开启手动触发按钮
+
+jobs:
+  build-windows:
+    runs-on: windows-latest # 在 Windows 环境下运行
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # 第一步：把你的代码下载到虚拟机里
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable # 第二步：安装 Rust 编译器
+
+      - name: Build project
+        run: cargo build --release # 第三步：正式编译成 exe
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4 # 第四步：把编译好的 exe 存起来
+        with:
+          name: windows-exe
+          path: target/release/hello-gh-actions.exe
